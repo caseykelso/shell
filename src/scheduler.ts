@@ -11,9 +11,16 @@ const SchedulerInterface =
 </interface> \
 </node>';
 
-const SchedulerProxy = Gio.DBusProxy.makeProxyWrapper(SchedulerInterface);
+const SchedulerProxyWrapper = Gio.DBusProxy.makeProxyWrapper(SchedulerInterface);
 
-const SchedProxy = new SchedulerProxy(Gio.DBus.system, 'com.system76.Scheduler', '/com/system76/Scheduler');
+const SchedProxy: any = (() => {
+    const args: [any, string, string] = [Gio.DBus.system, 'com.system76.Scheduler', '/com/system76/Scheduler'];
+    try {
+        return new (SchedulerProxyWrapper as any)(...args);
+    } catch (_err) {
+        return (SchedulerProxyWrapper as any)(...args);
+    }
+})();
 
 let foreground: number = 0;
 let failed: boolean = false;

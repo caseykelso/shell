@@ -58,7 +58,11 @@ export class AddExceptionDialog {
     }
 
     close() {
-        this.dialog.close(global.get_current_time());
+        try {
+            (this.dialog as any).close({ animate: false });
+        } catch (_err) {
+            this.dialog.close(global.get_current_time());
+        }
     }
 
     show() {
@@ -66,7 +70,11 @@ export class AddExceptionDialog {
     }
 
     open() {
-        this.dialog.open(global.get_current_time(), false);
+        try {
+            (this.dialog as any).open(global.get_current_time(), { animate: false });
+        } catch (_err) {
+            this.dialog.open(global.get_current_time(), false);
+        }
         this.show();
     }
 }
